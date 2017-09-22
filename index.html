@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>12 o'clocks</title>
+    <script src="libraries/p5.js" type="text/javascript"></script>
+
+    <script src="libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="libraries/p5.sound.js" type="text/javascript"></script>
+
+    <script src="clocks/clock-01.js" type="text/javascript"></script>
+    <script src="clocks/clock-02.js" type="text/javascript"></script>
+    <script src="clocks/clock-03.js" type="text/javascript"></script>
+    <script src="clocks/clock-04.js" type="text/javascript"></script>
+    <script src="clocks/clock-05.js" type="text/javascript"></script>
+    <script src="clocks/clock-06.js" type="text/javascript"></script>
+    <script src="clocks/clock-07.js" type="text/javascript"></script>
+    <script src="clocks/clock-08.js" type="text/javascript"></script>
+    <script src="clocks/clock-09.js" type="text/javascript"></script>
+    <script src="clocks/clock-10.js" type="text/javascript"></script>
+    <script src="clocks/clock-11.js" type="text/javascript"></script>
+    <script src="clocks/clock-12.js" type="text/javascript"></script>
+
+    <script src="sketch.js" type="text/javascript"></script>
+
+    <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background: #000;
+      color: #FFF;
+      font-family: arial;
+    }
+    canvas {
+      vertical-align: top;
+      width: 20vw !important;
+      height: 20vh !important;
+      min-width: 200px;
+      min-height: 200px;
+    }
+    #container {
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+      width: 80vw;
+      height: 80vh;
+      margin: 10vh 10vw;
+    }
+
+    #container .clock {
+      border: 1px solid #333;
+    }
+
+    #container .clock:hover {
+      border-color: red;
+    }
+
+    #container .copyright {
+      grid-column-start: 1;
+      grid-column-end: 5;
+      padding: 20px;
+      text-align: right;
+    }
+
+    @media (max-width: 800px) {
+      #container {
+        grid-template-rows: repeat(11, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #container .copyright {
+        grid-row-start: 1;
+        grid-column-end: 3;
+        padding: 20px;
+        text-align: right;
+      }
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="clock-01" class="clock"></div>
+      <div id="clock-02" class="clock"></div>
+      <div id="clock-03" class="clock"></div>
+      <div id="clock-04" class="clock"></div>
+      <div id="clock-05" class="clock"></div>
+      <div id="clock-06" class="clock"></div>
+      <div id="clock-07" class="clock"></div>
+      <div id="clock-08" class="clock"></div>
+      <div id="clock-09" class="clock"></div>
+      <div id="clock-10" class="clock"></div>
+      <div id="clock-11" class="clock"></div>
+      <div id="clock-12" class="clock"></div>
+      <div class="copyright">
+        <h1>12 o'clocks</h1>
+        <h2>designed by John Maeda</h2>
+      </div>
+    </div>
+  </body>
+</html>
