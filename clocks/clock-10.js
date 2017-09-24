@@ -1,4 +1,4 @@
-// This is the clocks-as-pixels clock
+// This is the rotated grid clock
 var clock10 = function(sketch) {
   sketch.setup = function() {
 
