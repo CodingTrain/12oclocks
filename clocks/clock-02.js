@@ -3,36 +3,55 @@ var clock02 = function(sketch) {
   sketch.setup = function() {
 
   }
+  var prevHour = -1;
+  var prevMinute = -1;
+  var prevSecond = -1;
+  var prevWidth = -1;
+  var prevHeight = -1;
 
   sketch.draw = function() {
-    let strokeWeight = 2;
-    let radius = 15;
-    sketch.background(0);
-    sketch.fill(255);
-
-    // set up current working area
-    // the clock is 11 cells wide by 7 cells tall
-    if(sketch.width / sketch.height > 11/7)
+    // Only redraw when we have to
+    if(prevHour !== sketch.hour() || 
+        prevMinute !== sketch.minute() || 
+        prevSecond !== sketch.second() ||
+        prevWidth !== sketch.width || 
+        prevHeight !== sketch.height)
     {
-      // restrict based on height
-      // make the sketch have 10 cells of height (7 for the clock, 3 for edge padding) 
-      radius = sketch.height / 10; 
-    }
-    else{
-      // restrict based on width
-      // make the sketch have 14 cells of width (11 for the clock, 3 for edge padding) 
-      radius = sketch.width / 14; 
-    }
-    if(radius < 15)
-      strokeWeight = 1;
+      prevHour = sketch.hour();
+      prevMinute = sketch.minute();
+      prevSecond = sketch.second();
+      prevWidth = sketch.width;
+      prevHeight = sketch.height;
+      
+      let strokeWeight = 2;
+      let radius = 15;
+      sketch.background(0);
+      sketch.fill(255);
 
-    let centerX = sketch.width/2 + radius/2;
-    let centerY = sketch.height/2 + radius/2;
-    sketch.strokeWeight(strokeWeight);
-    sketch.ellipseMode(sketch.CENTER);
-    DrawHour(sketch, sketch.hour(), centerX, centerY, radius, strokeWeight);
-    DrawMinute(sketch, sketch.minute(), centerX, centerY, radius, strokeWeight);
-    DrawSecond(sketch, sketch.second(), centerX, centerY, radius, strokeWeight);
+      // set up current working area
+      // the clock is 11 cells wide by 7 cells tall
+      if(sketch.width / sketch.height > 11/7)
+      {
+        // restrict based on height
+        // make the sketch have 10 cells of height (7 for the clock, 3 for edge padding) 
+        radius = sketch.height / 10; 
+      }
+      else{
+        // restrict based on width
+        // make the sketch have 14 cells of width (11 for the clock, 3 for edge padding) 
+        radius = sketch.width / 14; 
+      }
+      if(radius < 15)
+        strokeWeight = 1;
+
+      let centerX = sketch.width/2 + radius/2;
+      let centerY = sketch.height/2 + radius/2;
+      sketch.strokeWeight(strokeWeight);
+      sketch.ellipseMode(sketch.CENTER);
+      DrawHour(sketch, sketch.hour(), centerX, centerY, radius, strokeWeight);
+      DrawMinute(sketch, sketch.minute(), centerX, centerY, radius, strokeWeight);
+      DrawSecond(sketch, sketch.second(), centerX, centerY, radius, strokeWeight);
+    }
   }
   /**
    * Draw the hour value.  If the hour is less than 10, then the value will be centered.
