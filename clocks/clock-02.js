@@ -46,6 +46,7 @@ var clock02 = function(sketch) {
    */
   function DrawHour(sketch, hour, centerX, centerY, cellWidth, strokeWidth)
   {
+    hour = hour%12;
     let ones = hour%10;
     sketch.stroke(255,0,0);
     sketch.noFill();
