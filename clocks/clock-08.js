@@ -13,7 +13,6 @@ var clock08 = function(sketch) {
 
     let h = sketch.hour() % 12;
     let m = sketch.minute();
-    let s = sketch.second();
 
     sketch.background(0);
 
