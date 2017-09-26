@@ -47,10 +47,6 @@ var clock04 = function(sketch) {
       clock[idx].hue = sketch.floor(sketch.random(0, 360));
     }
 
-    // stroke(255);
-    // line(0, height/2, width, height/2);
-    // line(width/2, 0, width/2, height);
-
 
     // Translate so the clock ends up in the right spot
     let translateX = (sketch.width/2 - 25.5 * charWidth) + 2 * timesStored * charWidth;
@@ -70,7 +66,8 @@ var clock04 = function(sketch) {
     sketch.push()
     let timeString = t.h + ":" + pad(t.m) + ":" + pad(t.s);
 
-    // If hour is a single digit; translate for 1 char before starting
+    // If hour is a single digit; 
+    // translate by 1 char before starting
     if (t.h < 10) {
       sketch.translate(6 * charWidth, 6 * skew); 
     }
@@ -91,8 +88,6 @@ var clock04 = function(sketch) {
 
   function drawCharacter(c, charWidth, charHeight, skew) {
     let cMatrix = font[c];
-    //console.log(cMatrix);
-
     let x = 0;
     let y = 0;
     for (let r = 0; r < cMatrix.length; r++) {
