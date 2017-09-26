@@ -5,8 +5,20 @@
 // using font.js from https://github.com/CodingTrain/12oclocks/pull/2/ by @FantasyTeddy
 
 var clock09 = function(sketch) {
+  var cMillis = 0;
+  var startAngleSecs = 0, startAngleMins = 0, startAngleHrs = 0;
   sketch.setup = function() {
+    sketch.angleMode(sketch.DEGREES);
 
+    	setInterval( function() {
+    		cMillis += 10;
+    		//equates to 1 step movement per 0.5 seconds
+    		startAngleSecs += 0.12;
+    		//rotates negatively, equates to 1 step movement per 3 seconds
+    		startAngleMins -= 0.02;
+    		//equates to 1 step movement per 10 seconds
+    		startAngleHrs += 0.006
+    } , 10);
   }
 
   sketch.draw = function() {
@@ -25,12 +37,8 @@ var clock09 = function(sketch) {
       for (let row = 0; row < dots.length; row++) {
         for (let col = 0; col < dots[row].length; col++) {
           if (dots[row][col] === 1)
-            sketch.ellipse(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);
-            sketch.push();
-            sketch.fill(0);
+            drawClock(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);
             
-            sketch.ellipse(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 1*size, 1*size);
-            sketch.pop();
         }
       }
     }
@@ -66,5 +74,30 @@ var clock09 = function(sketch) {
         
     }
   }
-
+  function drawClock(x,y,w,h)
+  {
+    let hr = 9;
+    let mn = sketch.minute();
+    let sc = sketch.second();
+  	let secondAngle = sketch.map(sc, 0, 60, 0, 360);
+  	let minuteAngle = sketch.map(mn, 0, 60, 0, 360);
+    let hourAngle = sketch.map(hr, 0, 12, 0, 360);
+    let hourCoords = getPoint(x,y,10,hourAngle);
+    sketch.fill(255);
+    sketch.ellipse(x,y,w,h);
+    sketch.push();
+    sketch.stroke(255,0,0);
+    sketch.fill(255,0,0);
+    sketch.line(x,y,hourCoords.x, hourCoords.y);
+    sketch.pop();
+  }
+  
+  function getPoint(x,y,d,a)
+  {
+    a = Math.PI; 
+    return {
+      x: x + (d * (1 /sketch.sqrt(1 + (a * a)))),
+      y: y + (d * (a /sketch.sqrt(1 + (a * a))))
+    };
+  }
 }
