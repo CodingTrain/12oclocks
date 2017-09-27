@@ -10,8 +10,10 @@ var clock07 = function(sketch) {
     sketch.fill(255);
     sketch.textAlign(sketch.CENTER, sketch.CENTER);
 
-    let hSpacing = sketch.height / 3;
-    let spacing = (sketch.height / 2 - hSpacing) / 4;
+    let min_dimension = Math.min(sketch.height, sketch.width);
+
+    let hSpacing = min_dimension / 3;
+    let spacing = (min_dimension / 2 - hSpacing) / 4;
     let h = sketch.hour();
     let m = sketch.minute();
     let s = sketch.second();
@@ -19,7 +21,7 @@ var clock07 = function(sketch) {
     let angle = sketch.map(s, 0, 60, -sketch.PI, sketch.PI);
     let letterSqueeze = 0.6;
 
-    let hIndicatorSize = sketch.width / 100;
+    let hIndicatorSize = min_dimension / 100;
 
     sketch.translate(sketch.width / 2, sketch.height / 2);
     sketch.rotate(angle);
