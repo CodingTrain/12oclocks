@@ -29,7 +29,7 @@ var clock07 = function(sketch) {
     sketch.fill(100);
 
     sketch.translate(-hIndicatorSize * 3, 0);
-    if (h > 12) {
+    if (h < 12) {
       drawCharacter('A', hIndicatorSize, 1);
     } else {
       drawCharacter('P', hIndicatorSize, 1);
