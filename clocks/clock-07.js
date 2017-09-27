@@ -1,4 +1,4 @@
-// This is the double circle clock
+// This is the time as a clock-hand
 var clock07 = function(sketch) {
 
   sketch.setup = function() {
