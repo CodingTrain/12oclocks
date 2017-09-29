@@ -1,21 +1,20 @@
 //alebas96
 
-function setup() {
-
-	angleMode(DEGREES);
-	 pixelFont= loadFont('libraries/Minecraft.ttf');
+var clock7 = function (sketch) {
+ sketch.setup = function() {
+ -    sketch.setFrameRate(1);
+	 sketch.angleMode(DEGREES);
+	 sketch.pixelFont= loadFont('libraries/Minecraft.ttf');
+	
+ -  }
 	
 }
 let pixelFont;
 const fontSize=30;
 
-var dots = function(){
+sketch.draw = function(){
+	
 
-	fill(0);
-}
-
-
-function draw() {
 	background(0);
 	let hh = hour();
 	let mm = minute();
