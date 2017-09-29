@@ -1,83 +1,59 @@
-// This is the time as a clock-hand
-var clock07 = function(sketch) {
+//alebas96
 
-  sketch.setup = function() {
-    sketch.setFrameRate(1);
-  }
+function setup() {
 
-  sketch.draw = function() {
-    sketch.background(0);
-    sketch.fill(255);
-    sketch.textAlign(sketch.CENTER, sketch.CENTER);
+	angleMode(DEGREES);
+	 pixelFont= loadFont('libraries/Minecraft.ttf');
+	
+}
+let pixelFont;
+const fontSize=30;
 
-    let min_dimension = Math.min(sketch.height, sketch.width);
+var dots = function(){
 
-    let hSpacing = min_dimension / 3;
-    let spacing = (min_dimension / 2 - hSpacing) / 4;
-    let h = sketch.hour();
-    let m = sketch.minute();
-    let s = sketch.second();
-    let mod = h % 12;
-    let angle = sketch.map(s, 0, 60, -sketch.PI, sketch.PI);
-    let letterSqueeze = 0.6;
+	fill(0);
+}
 
-    let hIndicatorSize = min_dimension / 100;
 
-    sketch.translate(sketch.width / 2, sketch.height / 2);
-    sketch.rotate(angle);
+function draw() {
+	background(0);
+	let hh = hour();
+	let mm = minute();
+	let ss = second();
 
-    // draw AM PM
-    sketch.textSize(hIndicatorSize);
-    sketch.fill(100);
+	translate(width/2, height/2);
+	scale(0.5	);
+	let angle = map(ss,0,60,0,360);
+	rotate(angle);
 
-    sketch.translate(-hIndicatorSize * 3, 0);
-    if (h < 12) {
-      drawCharacter('A', hIndicatorSize, 1);
-    } else {
-      drawCharacter('P', hIndicatorSize, 1);
-    }
-    sketch.translate(hIndicatorSize * 6, 0);
-    drawCharacter('M', hIndicatorSize, 1);
-    sketch.translate(-hIndicatorSize * 3, 0);
-    sketch.translate(0, hSpacing);
+	fill(255);
+	fill(255);
+	textFont(pixelFont,fontSize);
+	textAlign(CENTER);
 
-    // draw H
-    hIndicatorSize *= .75;
-    sketch.fill(255);
-    if (mod < 10) {
-      drawCharacter(mod, hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing * 2);
-    } else {
-      drawCharacter(sketch.floor(mod / 10), hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing);
-      drawCharacter(mod % 10, hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing);
-    }
+	if(hh%12>0){
+		fill(150);
+		text("PM",0,0+fontSize);
+		fill(255);
+		text(hh%12,0,0+fontSize*2.5);
+	}
+	else{
+		fill(150);
+		text("AM",0,0+fontSize);
+		fill(255);
+		text(hh,2,0,0+fontSize*2.5);
+	}
+	fill(255);
+	var mm2= nf(mm,2);
+	text(mm2.toString().charAt(0),0,0+fontSize*4.5);
+	text(mm2.toString().charAt(1),0,0+fontSize*5.5);
+	fill(255,0,0);
+	if(frameCount%60===	0){
 
-    // draw M
-    sketch.fill(255);
-    if (m < 10) {
-      drawCharacter(0, hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing);
-      drawCharacter(m, hIndicatorSize, letterSqueeze);
-    } else {
-      drawCharacter(sketch.floor(m / 10), hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing);
-      drawCharacter(m % 10, hIndicatorSize, letterSqueeze);
-    }
-  }
+		text(":",0,0+fontSize*3.5);
 
-  function drawCharacter(character, size, letterSqueeze) {
-    let dots = font[character];
-    sketch.push();
-    sketch.noStroke();
-    for (let row = 0; row < dots.length; row++) {
-      for (let col = 0; col < dots[row].length; col++) {
-        if (dots[row][col] === 1) {
-          sketch.rect(size * col - size * 2.5, (size * row - size * 2.5) * letterSqueeze, size, size * letterSqueeze);
-        }
-      }
-    }
-    sketch.pop();
-  }
+	}
+
+
+
 }
