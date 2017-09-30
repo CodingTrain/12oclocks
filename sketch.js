@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
   var clocks = new Array(12).fill(0).map(function(_, i) {
     i++;
-    var rendersEveryFrame = [1, 3, 6, 8, 9, 11].indexOf(i) >= 0;
+    var rendersEveryFrame = [1, 3, 6, 7, 8, 11].indexOf(i) >= 0;
     if (i < 10) {
       i = "0" + i
     } else {
