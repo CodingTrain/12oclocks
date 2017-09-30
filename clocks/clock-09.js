@@ -8,7 +8,8 @@ var clock09 = function(sketch) {
     sketch.background(0);
     sketch.fill(177);
     sketch.textAlign(sketch.CENTER, sketch.CENTER);
-    drawTime(sketch.hour().toString(), sketch.minute().toString(),sketch.second.toString());
+    let h = sketch.hour() % 12;
+    drawTime((h == 0 ? 12 : h).toString(), sketch.minute().toString(),sketch.second.toString());
     // drawTime("4","48", "0"); // Testing hour & minute as shown at http://cmuems.com/2016/60212/wp-content/uploads/2016/09/maeda-all.gif
   };
 
