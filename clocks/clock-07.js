@@ -12,8 +12,8 @@ var clock07 = function(sketch) {
 
     let min_dimension = Math.min(sketch.height, sketch.width);
 
-    let hSpacing = min_dimension / 3;
-    let spacing = (min_dimension / 2 - hSpacing) / 4;
+    let hSpacing = min_dimension / 4;
+    let spacing = (min_dimension / 2 - hSpacing) / 5;
     let h = sketch.hour();
     let m = sketch.minute();
     let s = sketch.second();
@@ -45,14 +45,21 @@ var clock07 = function(sketch) {
     hIndicatorSize *= .75;
     sketch.fill(255);
     if (mod < 10) {
+      sketch.translate(0, spacing);
       drawCharacter(mod, hIndicatorSize, letterSqueeze);
-      sketch.translate(0, spacing * 2);
+      sketch.translate(0, spacing);
     } else {
       drawCharacter(sketch.floor(mod / 10), hIndicatorSize, letterSqueeze);
       sketch.translate(0, spacing);
       drawCharacter(mod % 10, hIndicatorSize, letterSqueeze);
       sketch.translate(0, spacing);
     }
+
+    // draw ':'
+    sketch.fill(255, 0, 0);
+    if((Date.now() % 1000) < 500)
+      drawCharacter(":", hIndicatorSize, letterSqueeze);
+    sketch.translate(0, spacing);
 
     // draw M
     sketch.fill(255);
