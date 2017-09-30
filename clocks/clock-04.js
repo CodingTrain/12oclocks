@@ -10,55 +10,64 @@ var clock04 = function(sketch) {
   let charHeightBase = 5;
   let skewBase = 1.5;
 
+  let frameCount = 0;
+  let sec;
+
   for (let i = 0; i < numTimes; i++) {
     clock.push(null);
   }
 
   sketch.setup = function() {
     sketch.frameRate(1);
+    sec = sketch.second();
   }
 
   sketch.draw = function() {
 
-    sketch.background(0);
+    if (sec != sketch.second()) {
 
-    let scale = sketch.width / baseWidth;
-    let frameCount = sketch.frameCount;
+      sketch.background(0);
 
-    let charWidth = charWidthBase * scale;
-    let charHeight = charHeightBase * scale;
-    let skew = skewBase * scale;  
+      let scale = sketch.width / baseWidth;
 
-
-    sketch.colorMode(sketch.HSB);
-
-    // Use frame count to determine index, so it can be used as a circular array
-    let idx = frameCount % clock.length;
-    clock[idx] = getTime();
-
-    // Take the previous clock's hue and increment it
-    // If this is the first clock, pick a random hue
-    let prevIdx = (frameCount - 1) % numTimes;
-    if (clock[prevIdx]) {
-      let hue = clock[prevIdx].hue;
-      hue = (hue + 5) % 360;
-      clock[idx].hue = hue;
-    } else {
-      clock[idx].hue = sketch.floor(sketch.random(0, 360));
-    }
+      let charWidth = charWidthBase * scale;
+      let charHeight = charHeightBase * scale;
+      let skew = skewBase * scale;  
 
 
-    // Translate so the clock ends up in the right spot
-    let translateX = (sketch.width/2 - 25.5 * charWidth) + 2 * timesStored * charWidth;
-    let translateY = (sketch.height/2 - 7 * charHeight) - 2 * timesStored * charHeight;
-    sketch.translate(translateX, translateY);
-    for (let i = frameCount+1; i <= frameCount + clock.length; i++) {
-      let j = i % clock.length;
-      if (clock[j]) {
-        let last = (i == frameCount + clock.length);
-        drawClock(clock[j], charWidth, charHeight, skew, last);
-        sketch.translate(-2 * charWidth, 2 * charHeight);
+      sketch.colorMode(sketch.HSB);
+
+      // Use frame count to determine index, so it can be used as a circular array
+      let idx = frameCount % clock.length;
+      clock[idx] = getTime();
+
+      // Take the previous clock's hue and increment it
+      // If this is the first clock, pick a random hue
+      let prevIdx = (frameCount - 1) % numTimes;
+      if (clock[prevIdx]) {
+        let hue = clock[prevIdx].hue;
+        hue = (hue + 5) % 360;
+        clock[idx].hue = hue;
+      } else {
+        clock[idx].hue = sketch.floor(sketch.random(0, 360));
       }
+
+
+      // Translate so the clock ends up in the right spot
+      let translateX = (sketch.width/2 - 25.5 * charWidth) + 2 * timesStored * charWidth;
+      let translateY = (sketch.height/2 - 7 * charHeight) - 2 * timesStored * charHeight;
+      sketch.translate(translateX, translateY);
+      for (let i = frameCount+1; i <= frameCount + clock.length; i++) {
+        let j = i % clock.length;
+        if (clock[j]) {
+          let last = (i == frameCount + clock.length);
+          drawClock(clock[j], charWidth, charHeight, skew, last);
+          sketch.translate(-2 * charWidth, 2 * charHeight);
+        }
+      }
+
+      sec = sketch.second();
+      frameCount++
     }
   }
 
