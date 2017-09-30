@@ -3,11 +3,11 @@ var clock03 = function(sketch) {
   // "radial grid" parameters
   let diameter_step;
   const radial_step = 360/(6*6); // 6 characters of (5 width + 1 "blank" between each)
-  
+
   sketch.setup = function() {
     sketch.angleMode(sketch.DEGREES);
     sketch.noStroke();
-    
+
     // disc divided in 10 parts (top line empty, 7 others for the digit and the two smaller diameters empty)
     diameter_step = sketch.height/10;
   }
@@ -54,6 +54,7 @@ var clock03 = function(sketch) {
         }
         sketch.fill(0);
         sketch.ellipse(0, sketch.height/2, diameter_step*(i+2));
+        sketch.ellipse(sketch.width, sketch.height/2, diameter_step*(i+2));
       }
     }
   }
