@@ -25,7 +25,7 @@ var clock09 = function(sketch) {
     }
 
   // By @haideralipunjabi
-  function drawTime(hour,minute, second){
+  function drawTime(hour, minute, second){
     // Prefixing 0 before minute < 10
     if(minute.length === 1) minute = "0" + minute;
     
@@ -34,7 +34,7 @@ var clock09 = function(sketch) {
     // No. of cols = (No. of characters * No. of cols of each character)   + Spaces in between characters + cols to leave before and after clock
     // Here, No. of characters = 5, No. of cols of each character = 5, Spaces in between characters = 4, cols to leave before and after = 6 (3 before & 3 after)
 
-    size = sketch.width / (35 * 5)
+    size = sketch.width / (35 * 5);
 
     // Spacing between characters (Size of dot * calculated size)
 
@@ -53,7 +53,7 @@ var clock09 = function(sketch) {
        drawCharacter(minute[i], sketch.width/2 + (spacing * (i+1) * 6) , sketch.height/2,size);
     }
   }
-  function drawClock(x,y,w,h)
+  function drawClock(x, y, w, h)
   {
     let hr = sketch.hour();
     let mn = sketch.minute();
