@@ -17,7 +17,7 @@ var clock03 = function(sketch) {
     let angle = sketch.map(sketch.millis() % 60000, 0, 60000, 0, 360);
 
     // Get current time
-    let h = sketch.hour() % 12;
+    let h = sketch.hour() % 12 === 0 ? 12 : sketch.hour() % 12;
     let m = sketch.minute();
     // convert to string and add space before minutes and hours if they are less than two characters
     if (h < 10) {

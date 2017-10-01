@@ -17,7 +17,7 @@ var clock07 = function(sketch) {
     let h = sketch.hour();
     let m = sketch.minute();
     let s = sketch.second();
-    let mod = h % 12;
+    let mod = h % 12 === 0 ? 12 : h % 12;
     let angle = sketch.map(s, 0, 60, -sketch.PI, sketch.PI);
     let letterSqueeze = 0.6;
 
