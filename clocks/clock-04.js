@@ -27,7 +27,7 @@ var clock04 = function(sketch) {
 
     let charWidth = charWidthBase * scale;
     let charHeight = charHeightBase * scale;
-    let skew = skewBase * scale;  
+    let skew = skewBase * scale;
 
 
     sketch.colorMode(sketch.HSB);
@@ -66,10 +66,10 @@ var clock04 = function(sketch) {
     sketch.push()
     let timeString = t.h + ":" + pad(t.m) + ":" + pad(t.s);
 
-    // If hour is a single digit; 
+    // If hour is a single digit;
     // translate by 1 char before starting
     if (t.h < 10) {
-      sketch.translate(6 * charWidth, 6 * skew); 
+      sketch.translate(6 * charWidth, 6 * skew);
     }
 
     if (last) {
@@ -114,14 +114,14 @@ var clock04 = function(sketch) {
     let n = num.toString();
     if (n.length == 2) {
       return n;
-    } else { 
+    } else {
       return "0"+n;
     }
   }
 
   function getTime() {
     let rightNow = {
-      h: sketch.hour() % 12,
+      h: sketch.hour() % 12 === 0 ? 12 : sketch.hour() % 12,
       m: sketch.minute(),
       s: sketch.second(),
     };

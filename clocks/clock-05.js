@@ -6,7 +6,7 @@ var clock05 = function(sketch) {
   }
 
   sketch.draw = function() {
-  	let h = sketch.hour() % 12;
+  	let h = sketch.hour() % 12 === 0 ? 12 : sketch.hour() % 12;
   	let m = sketch.minute();
   	let s = sketch.second();
 
@@ -18,7 +18,7 @@ var clock05 = function(sketch) {
 	sketch.fill(0);
 
 	// rotate the hours, not in push()-pop() because minutes and seconds are relative to the hours
-	sketch.rotate(2*sketch.PI*h/12);	
+	sketch.rotate(2*sketch.PI*h/12);
 	sketch.push();
 		if (h >= 10) {
 		    sketch.translate(-3*size, 0);
@@ -31,7 +31,7 @@ var clock05 = function(sketch) {
 	sketch.pop();
 
 	// the minutes and seconds are an additional 180 degrees rotated (look at original)
-	sketch.rotate(sketch.PI);	
+	sketch.rotate(sketch.PI);
 
     // --- draw minutes ---
     size = size * 0.75;
@@ -74,10 +74,18 @@ var clock05 = function(sketch) {
     for (let row = 0; row < dots.length; row++) {
       for (let col = 0; col < dots[row].length; col++) {
         if (dots[row][col] === 1) {
-          sketch.rect(size * col - size*2.5, size * row - size*3.5, size, size);
+          sketch.rect(size * col - size*2.5, size * row - size*3.5, size + joined(row, col + 1), size);
+          sketch.rect(size * col - size*2.5, size * row - size*3.5, size, size + joined(row + 1, col));
       	}
       }
     }
     sketch.pop();
+
+    function joined(row, col) {
+    	if (row < 0 || row >= dots.length || col < 0 || col >= dots[row].length) {
+    		return false;
+    	}
+    	return dots[row][col] === 1;
+    }
   }
 }
