@@ -16,13 +16,20 @@ window.addEventListener('load', function() {
 
   clocks.forEach(function(data) {
     data.p5 = new p5(function(sketch) {
+      data.over = false;
       // Original sketch
       data.fn(sketch);
       // Override setup
       var old_setup = sketch.setup || function() {};
       sketch.setup = function() {
         // Grab canvas element
-        data.canvas = sketch.createCanvas(100, 100).elt;
+        var canvas = sketch.createCanvas(100, 100);
+        canvas.mouseOver(function(){
+          data.over = true;
+        }).mouseOut(function(){
+          data.over=false
+        });
+        data.canvas = canvas.elt;
         sketch.resize();
         sketch.noLoop();
         old_setup.apply(this, arguments);
@@ -55,8 +62,15 @@ window.addEventListener('load', function() {
       must_redraw = true;
     }
     last_render_second = second;
+    var overContainer = false;
+    clocks.forEach(function(data){
+      if (data.over){
+        overContainer = true;
+        return;
+      }
+    });
     clocks.forEach(function(data) {
-      if(data.rendersEveryFrame || must_redraw) {
+       if((data.over || !overContainer) && (data.rendersEveryFrame || must_redraw)) {
         // Note that frameCount is broken in p5.js version 0.5.14
         // See https://github.com/processing/p5.js/issues/2192
         data.p5.frameCount += 1;

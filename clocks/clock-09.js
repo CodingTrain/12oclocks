@@ -8,8 +8,7 @@ var clock09 = function(sketch) {
     sketch.background(0);
     sketch.fill(177);
     sketch.textAlign(sketch.CENTER, sketch.CENTER);
-    let h = sketch.hour() % 12;
-    drawTime((h == 0 ? 12 : h).toString(), sketch.minute().toString(),sketch.second.toString());
+    drawTime(get12Hour(sketch.hour()).toString(), sketch.minute().toString(),sketch.second.toString());
     // drawTime("4","48", "0"); // Testing hour & minute as shown at http://cmuems.com/2016/60212/wp-content/uploads/2016/09/maeda-all.gif
   };
 
@@ -20,7 +19,7 @@ var clock09 = function(sketch) {
       for (let row = 0; row < dots.length; row++) {
         for (let col = 0; col < dots[row].length; col++) {
           if (dots[row][col] === 1)
-            drawClock(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);            
+            drawClock(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);
         }
       }
     }
@@ -29,7 +28,7 @@ var clock09 = function(sketch) {
   function drawTime(hour, minute, second){
     // Prefixing 0 before minute < 10
     if(minute.length === 1) minute = "0" + minute;
-    
+
     // Calculating multiplying factor to size of each dot, so that clock fills whole space.
     // Calculated by divinding availavle space(width) by required space (no. of cols * size of dot(5) )
     // No. of cols = (No. of characters * No. of cols of each character)   + Spaces in between characters + cols to leave before and after clock
@@ -56,7 +55,7 @@ var clock09 = function(sketch) {
   }
   function drawClock(x, y, w, h)
   {
-    let hr = sketch.hour();
+    let hr = get12Hour(sketch.hour());
     let mn = sketch.minute();
     let sc = sketch.second();
   	let secondAngle = sketch.map(sc, 0, 60, 0, 360) - 90;
@@ -67,7 +66,7 @@ var clock09 = function(sketch) {
     sketch.fill(224);
     sketch.ellipse(x,y,w,h);
     // Draw the inner cirle
-    sketch.fill(255);    
+    sketch.fill(255);
     sketch.ellipse(x,y,w-1,h-1);
     // Draw the arms / arcs
     sketch.push();
@@ -92,5 +91,9 @@ var clock09 = function(sketch) {
         sketch.arc(0,0,w-1,w-1,secondAngle - 10, secondAngle+10 );
       sketch.pop();
     sketch.pop();
+  }
+  function get12Hour(hour)
+  {
+    return hour > 12 ? hour-12 : hour;
   }
 };
