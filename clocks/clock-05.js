@@ -74,10 +74,18 @@ var clock05 = function(sketch) {
     for (let row = 0; row < dots.length; row++) {
       for (let col = 0; col < dots[row].length; col++) {
         if (dots[row][col] === 1) {
-          sketch.rect(size * col - size*2.5, size * row - size*3.5, size, size);
+          sketch.rect(size * col - size*2.5, size * row - size*3.5, size + joined(row, col + 1), size);
+          sketch.rect(size * col - size*2.5, size * row - size*3.5, size, size + joined(row + 1, col));
       	}
       }
     }
     sketch.pop();
+
+    function joined(row, col) {
+    	if (row < 0 || row >= dots.length || col < 0 || col >= dots[row].length) {
+    		return false;
+    	}
+    	return dots[row][col] === 1;
+    }
   }
 }
