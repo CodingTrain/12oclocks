@@ -4,20 +4,20 @@ var clock08 = function(sketch) {
   // Angle to use in sin calculation
   let angle = 0.0;
   // Amount to increment angle by
-  const delta = 0.025; 
+  const delta = 0.025;
 
   sketch.setup = function() {
   }
 
   sketch.draw = function() {
 
-    let h = sketch.hour() % 12;
+    let h = sketch.hour() % 12 === 0 ? 12 : sketch.hour() % 12;
     let m = sketch.minute();
 
     sketch.background(0);
 
     sketch.translate(sketch.width/2,sketch.height/2);
-    
+
     // Map sin to scale
     let hScale = sketch.map(Math.sin(angle), -1, 1, 2, 10);
     let mScale = sketch.map(Math.sin(angle), -1, 1, 10, 2);

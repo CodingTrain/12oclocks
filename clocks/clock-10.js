@@ -51,7 +51,8 @@ var clock10 = function(sketch) {
   function drawDate(i, j, x, y, size) {
     let colorI = colorDefault,
       colorJ = colorDefault;
-    if (i * 10 + j === sketch.hour() % 12) {
+    let h = sketch.hour() % 12 === 0 ? 12 : sketch.hour() % 12;
+    if (i * 10 + j === h) {
       if (i !== 0) colorI = colorWhite;
       colorJ = colorWhite;
     }

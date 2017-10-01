@@ -15,13 +15,13 @@ var clock02 = function(sketch) {
     if(sketch.width / sketch.height > 11/7)
     {
       // restrict based on height
-      // make the sketch have 10 cells of height (7 for the clock, 3 for edge padding) 
-      radius = sketch.height / 10; 
+      // make the sketch have 10 cells of height (7 for the clock, 3 for edge padding)
+      radius = sketch.height / 10;
     }
     else{
       // restrict based on width
-      // make the sketch have 14 cells of width (11 for the clock, 3 for edge padding) 
-      radius = sketch.width / 14; 
+      // make the sketch have 14 cells of width (11 for the clock, 3 for edge padding)
+      radius = sketch.width / 14;
     }
     if(radius < 15)
       strokeWeight = 1;
@@ -36,17 +36,17 @@ var clock02 = function(sketch) {
   }
   /**
    * Draw the hour value.  If the hour is less than 10, then the value will be centered.
-   * 
+   *
    * @param {p5} sketch Current sketch
    * @param {number} hour Target value
    * @param {number} centerX Current center offset for x
    * @param {number} centerY Current center offset for y
    * @param {number} cellWidth Width for a single dot to occupy
-   * @param {number} strokeWidth Current strokeWidth, used for padding 
+   * @param {number} strokeWidth Current strokeWidth, used for padding
    */
   function DrawHour(sketch, hour, centerX, centerY, cellWidth, strokeWidth)
   {
-    hour = hour%12;
+    hour = hour % 12 === 0 ? 12 : hour % 12;;
     let ones = hour%10;
     sketch.stroke(255,0,0);
     sketch.noFill();
@@ -64,13 +64,13 @@ var clock02 = function(sketch) {
 
   /**
    * Draw the minute value.
-   * 
+   *
    * @param {p5} sketch Current sketch
    * @param {number} minute Target value
    * @param {number} centerX Current center offset for x
    * @param {number} centerY Current center offset for y
    * @param {number} cellWidth Width for a single dot to occupy
-   * @param {number} strokeWidth Current strokeWidth, used for padding 
+   * @param {number} strokeWidth Current strokeWidth, used for padding
    */
   function DrawMinute(sketch, minute, centerX, centerY, cellWidth, strokeWidth)
   {
@@ -85,13 +85,13 @@ var clock02 = function(sketch) {
 
   /**
    * Draw the minute value.
-   * 
+   *
    * @param {p5} sketch Current sketch
    * @param {number} second Target value
    * @param {number} centerX Current center offset for x
    * @param {number} centerY Current center offset for y
    * @param {number} cellWidth Width for a single dot to occupy
-   * @param {number} strokeWidth Current strokeWidth, used for padding 
+   * @param {number} strokeWidth Current strokeWidth, used for padding
    */
   function DrawSecond(sketch, second, centerX, centerY, cellWidth, strokeWidth)
   {
@@ -104,14 +104,14 @@ var clock02 = function(sketch) {
     DrawCharacter(sketch, ones, centerX + (cellWidth/2), centerY - Math.floor((cellWidth * 7)/2), cellWidth, cellWidth -(strokeWidth*6));
   }
 /**
- * 
- * 
+ *
+ *
  * @param {p5} sketch Current sketch
  * @param {number|string} char The SINGLE CHARACTER to draw
  * @param {number} offsetX Current offset for x
  * @param {number} offsetY Current offset for y
  * @param {number} cellWidth Width for a single dot to occupy
- * @param {number} radius Current strokeWidth, used for padding 
+ * @param {number} radius Current strokeWidth, used for padding
  */
   function DrawCharacter(sketch, char, offsetX, offsetY, cellWidth, radius)
   {
