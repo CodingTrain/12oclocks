@@ -19,7 +19,7 @@ var clock09 = function(sketch) {
       for (let row = 0; row < dots.length; row++) {
         for (let col = 0; col < dots[row].length; col++) {
           if (dots[row][col] === 1)
-            drawClock(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);            
+            drawClock(x + (5*size) * col - (10*size), y + (5 * size) * row - (15 * size), 5*size, 5*size);
         }
       }
     }
@@ -28,7 +28,7 @@ var clock09 = function(sketch) {
   function drawTime(hour, minute, second){
     // Prefixing 0 before minute < 10
     if(minute.length === 1) minute = "0" + minute;
-    
+
     // Calculating multiplying factor to size of each dot, so that clock fills whole space.
     // Calculated by divinding availavle space(width) by required space (no. of cols * size of dot(5) )
     // No. of cols = (No. of characters * No. of cols of each character)   + Spaces in between characters + cols to leave before and after clock
@@ -66,7 +66,7 @@ var clock09 = function(sketch) {
     sketch.fill(224);
     sketch.ellipse(x,y,w,h);
     // Draw the inner cirle
-    sketch.fill(255);    
+    sketch.fill(255);
     sketch.ellipse(x,y,w-1,h-1);
     // Draw the arms / arcs
     sketch.push();

@@ -16,6 +16,11 @@ window.addEventListener('load', function() {
 
   clocks.forEach(function(data) {
     data.p5 = new p5(function(sketch) {
+      // add the hour12 method to the sketch object
+      sketch.hour12 = function() {
+        let h = sketch.hour() % 12;
+        return (h == 0 ? 12 : h);
+      }
       data.over = false;
       // Original sketch
       data.fn(sketch);
