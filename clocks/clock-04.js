@@ -12,6 +12,7 @@ var clock04 = function(sketch) {
 
   let frameCount = 0;
   let sec;
+  let ms;
 
   for (let i = 0; i < numTimes; i++) {
     clock.push(null);
@@ -20,11 +21,28 @@ var clock04 = function(sketch) {
   sketch.setup = function() {
     sketch.frameRate(1);
     sec = sketch.second();
+    ms = Date.now();
   }
 
   sketch.draw = function() {
 
     if (sec != sketch.second()) {
+      // Figure out how many seconds have passed
+      // since the clock was last drawn
+      let timePassed = sketch.floor((Date.now() - ms)/1000);
+      if (timePassed > 0) {
+        // Catch up with the seconds that have passed
+        let prevIdx = (frameCount - 1) % numTimes;
+        let time = clock[prevIdx];
+        for (let t = 0; t < timePassed; t++) {
+          // Add time to the array
+          let idx = frameCount % numTimes;
+          time = tick(time);
+          clock[idx] = time;
+          
+          frameCount++ // Add the 'missed frames' to the frameCount
+        }
+      }
 
       sketch.background(0);
 
@@ -34,15 +52,14 @@ var clock04 = function(sketch) {
       let charHeight = charHeightBase * scale;
       let skew = skewBase * scale;  
 
-
       sketch.colorMode(sketch.HSB);
 
       // Use frame count to determine index, so it can be used as a circular array
       let idx = frameCount % clock.length;
       clock[idx] = getTime();
 
-      // Take the previous clock's hue and increment it
-      // If this is the first clock, pick a random hue
+      // Take the previous time's hue and increment it
+      // If this is the first time, pick a random hue
       let prevIdx = (frameCount - 1) % numTimes;
       if (clock[prevIdx]) {
         let hue = clock[prevIdx].hue;
@@ -68,6 +85,7 @@ var clock04 = function(sketch) {
 
       sec = sketch.second();
       frameCount++
+      ms = Date.now();
     }
   }
 
@@ -128,7 +146,7 @@ var clock04 = function(sketch) {
     }
   }
 
-  function getTime() {
+  function getTime(h, m, s) {
     let rightNow = {
       h: sketch.hour() % 12,
       m: sketch.minute(),
@@ -137,5 +155,31 @@ var clock04 = function(sketch) {
     timesStored++;
     timesStored = sketch.min(timesStored, numTimes);
     return rightNow;
+  }
+
+  function tick(t) {
+    // Returns time t + 1 second
+    // And assigns the correct hue
+    let newT = {
+      s: t.s + 1,
+      m: t.m,
+      h: t.h,
+      hue: (t.hue + 5) % 360
+    };
+
+    if (newT.s == 60) {
+      newT.s = 0;
+      newT.m += 1;
+    }
+
+    if (newT.m == 60) {
+      newT.m = 0;
+      newT.h = (newT.h + 1)%12;
+    }
+
+    timesStored++;
+    timesStored = sketch.min(timesStored, numTimes);
+
+    return newT;
   }
 }
