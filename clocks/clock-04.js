@@ -19,7 +19,6 @@ var clock04 = function(sketch) {
   }
 
   sketch.setup = function() {
-    sketch.frameRate(1);
     sec = sketch.second();
     ms = Date.now();
   }
