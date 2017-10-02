@@ -94,6 +94,7 @@ var clock09 = function(sketch) {
   }
   function get12Hour(hour)
   {
+    if(hour === 0) return 12;
     return hour > 12 ? hour-12 : hour;
   }
 };
