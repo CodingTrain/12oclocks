@@ -145,7 +145,7 @@ var clock04 = function(sketch) {
     }
   }
 
-  function getTime(h, m, s) {
+  function getTime() {
     let rightNow = {
       h: sketch.hour() % 12,
       m: sketch.minute(),
