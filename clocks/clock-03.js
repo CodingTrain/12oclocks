@@ -37,14 +37,14 @@ var clock03 = function(sketch) {
         for (let k = 0; k < 6; k++) { // k loop all characters of the text
             sketch.fill(255);
             // skip arcs that are not needed
-            if (text[k] == ' ') {
-              break;
-            } else if (font[text[k]][6-i][j] == 0) {
+            if (text[k] == ' ' || font[text[k]][6-i][j] == 0) {
               continue;
             }
 
             // a little padding to the arc to reduce gaps
-            let padding = 0.1 * (7-i);
+            let hasRightNeighbour = (j+1 < 5 && font[text[k]][6-i][j+1] == 1);
+            let padding = hasRightNeighbour ? 1 : 0;
+            
             // display left arc, layer by layer for each columns so only a small "square" is left to be seen
             sketch.arc(0, sketch.height/2, // arc centered on the left center of the screen
             diameter_step*(i+3), diameter_step*(i+3), // with a diameter corresponding to the line i of the caracter
