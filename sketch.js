@@ -1,5 +1,12 @@
 window.addEventListener('load', function() {
   var container = document.getElementById('container');
+  var selected_clock = null;
+  // Commits not to be used for ascertaining authorship
+  var ignored_commits = [
+    "a0eeb36461f61cfae0eaed308a1126bba62dbc7b",
+    "0cdd085ccfcfe0d47f90b46a5aafd7bd21e8b97b",
+    "2db7cf53228ccaa0a26741bb3790eacad5c5c444"
+  ];
 
   var clocks = new Array(12).fill(0).map(function(_, i) {
     i++;
@@ -9,13 +16,13 @@ window.addEventListener('load', function() {
     } else {
       i = "" + i;
     }
-    var hash = "#clock-" + i;
-    var clock_container = document.getElementById("clock-" + i);
-    clock_container.addEventListener('click', change_hash.bind(null, hash));
+    var id = "clock-" + i;
+    var clock_container = document.getElementById(id);
+    clock_container.addEventListener('click', change_hash.bind(null, id));
     return {
       container: clock_container,
       fn: window["clock" + i],
-      hash: hash,
+      id: id,
       rendersEveryFrame: rendersEveryFrame,
     }
   });
@@ -97,24 +104,29 @@ window.addEventListener('load', function() {
   window.requestAnimationFrame(animate);
 
   function change_hash(hash_fragment) {
-    if(window.location.hash === hash_fragment) {
+    if(window.location.hash === "#" + hash_fragment) {
       window.location.hash = "";
     } else {
       window.location.hash = hash_fragment;
     }
   }
 
-  window.addEventListener('hashchange', function() {
+  window.addEventListener('hashchange', on_hash_change);
+
+  function on_hash_change() {
     var found = clocks.reduce(function(acc, data) {
-      if(window.location.hash === data.hash) {
+      if(window.location.hash === "#" + data.id) {
         return data;
       }
       return acc;
     }, null);
     select_clock(found);
-  });
+  }
+
+  on_hash_change();
 
   function select_clock(clock_data) {
+    selected_clock = clock_data;
     clocks.forEach(function(data) {
       data.container.classList.remove('selected');
     });
@@ -127,6 +139,52 @@ window.addEventListener('load', function() {
       clock_data.container.classList.add('selected');
       container.classList.add('single');
       clock_data.p5.resize();
+      update_contributors(clock_data);
+    }
+  }
+
+  function update_contributors(clock_data) {
+    refresh_contributors_gui();
+    if (!clock_data.contributors) {
+      fetch("https://api.github.com/repos/CodingTrain/12oclocks/commits?path=clocks/" + clock_data.id + ".js")
+        .then(function(r) {
+          return r.json();
+        })
+        .then(function(commits) {
+          clock_data.contributors = commits.reduce(function(acc, commit) {
+            // Don't include the original commit
+            if(ignored_commits.indexOf(commit.sha) >= 0) {
+              return acc;
+            }
+            if(acc.map(function(author) {
+              return author.id;
+            }).indexOf(commit.author.id) < 0) {
+              acc.push(commit.author);
+            }
+            return acc;
+          }, []).reverse();
+          refresh_contributors_gui();
+        });
+    }
+  }
+
+  function refresh_contributors_gui() {
+    var list = document.getElementById("contributor-list");
+    while(list.firstChild) {
+      list.removeChild(list.firstChild);
+    }
+    if(!selected_clock.contributors) {
+      // TODO: Loading menu?
+    } else {
+      selected_clock.contributors.forEach(function(author) {
+        var elem = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = author.html_url;
+        a.target = "_blank";
+        a.innerHTML = author.login;
+        elem.appendChild(a);
+        list.appendChild(elem);
+      });
     }
   }
 });

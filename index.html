@@ -50,7 +50,7 @@
       grid-template-rows: repeat(4, 1fr);
       grid-template-columns: repeat(4, 1fr);
       width: 80vw;
-      height: 80vh;
+      min-height: 80vh;
       margin: 10vh 10vw;
     }
 
@@ -88,9 +88,42 @@
       height: calc(60vh - 2px) !important;
     }
 
+    #container.single .copyright {
+      grid-column-end: 3;
+    }
+
+    #container .contributors {
+      display: none;
+      padding: 0 20px;
+      grid-column-start: 3;
+      grid-column-end: 5;
+    }
+
+    #container.single .contributors {
+      display: block;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+
+    }
+
+    li + li::before {
+      content: ", ";
+    }
+
     @media (max-width: 800px) {
       #container {
-        grid-template-rows: repeat(11, 1fr);
+        grid-template-rows: repeat(7, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #container.single {
+        grid-template-rows: 1fr 3fr 1fr;
         grid-template-columns: repeat(2, 1fr);
       }
       #container .copyright {
@@ -104,6 +137,11 @@
         grid-column-end: 3;
         grid-row-start: 2;
         grid-row-end: 3;
+      }
+      #container .contributors {
+        grid-row-start: 3;
+        grid-column-start: 1;
+        grid-column-end: 3;
       }
     }
 
@@ -127,6 +165,13 @@
         <h1>12 o'clocks</h1>
         <h2>designed by John Maeda</h2>
         <p>Ported to p5.js By <a href="https://github.com/CodingTrain/12oclocks/graphs/contributors">CodingTrain Contributors</a></p>
+      </div>
+      <div class="contributors">
+        <h1>&nbsp;</h1>
+        <h2>This clock was ported to p5.js by:</h2>
+        <ul id="contributor-list">
+
+        </ul>
       </div>
     </div>
   </body>
