@@ -1,4 +1,6 @@
 window.addEventListener('load', function() {
+  var container = document.getElementById('container');
+
   var clocks = new Array(12).fill(0).map(function(_, i) {
     i++;
     var rendersEveryFrame = [1, 3, 6, 7, 8, 11].indexOf(i) >= 0;
@@ -7,9 +9,13 @@ window.addEventListener('load', function() {
     } else {
       i = "" + i;
     }
+    var hash = "#clock-" + i;
+    var clock_container = document.getElementById("clock-" + i);
+    clock_container.addEventListener('click', change_hash.bind(null, hash));
     return {
-      container: document.getElementById("clock-" + i),
+      container: clock_container,
       fn: window["clock" + i],
+      hash: hash,
       rendersEveryFrame: rendersEveryFrame,
     }
   });
@@ -67,7 +73,7 @@ window.addEventListener('load', function() {
       must_redraw = true;
     }
     last_render_second = second;
-    var overContainer = false;
+    var overContainer = container.classList.contains('single');
     clocks.forEach(function(data){
       if (data.over){
         overContainer = true;
@@ -75,7 +81,8 @@ window.addEventListener('load', function() {
       }
     });
     clocks.forEach(function(data) {
-       if(data.over || (!overContainer && (data.rendersEveryFrame || must_redraw))) {
+       if((data.over || data.container.classList.contains('selected'))
+          || (!overContainer && (data.rendersEveryFrame || must_redraw))) {
         // Note that frameCount is broken in p5.js version 0.5.14
         // See https://github.com/processing/p5.js/issues/2192
         data.p5.frameCount += 1;
@@ -88,4 +95,38 @@ window.addEventListener('load', function() {
     window.requestAnimationFrame(animate);
   }
   window.requestAnimationFrame(animate);
+
+  function change_hash(hash_fragment) {
+    if(window.location.hash === hash_fragment) {
+      window.location.hash = "";
+    } else {
+      window.location.hash = hash_fragment;
+    }
+  }
+
+  window.addEventListener('hashchange', function() {
+    var found = clocks.reduce(function(acc, data) {
+      if(window.location.hash === data.hash) {
+        return data;
+      }
+      return acc;
+    }, null);
+    select_clock(found);
+  });
+
+  function select_clock(clock_data) {
+    clocks.forEach(function(data) {
+      data.container.classList.remove('selected');
+    });
+    if(clock_data === null) {
+      container.classList.remove('single');
+      clocks.forEach(function(data) {
+        data.p5.resize();
+      });
+    } else {
+      clock_data.container.classList.add('selected');
+      container.classList.add('single');
+      clock_data.p5.resize();
+    }
+  }
 });
