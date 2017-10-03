@@ -75,14 +75,16 @@ window.addEventListener('load', function() {
       }
     });
     clocks.forEach(function(data) {
-       if((data.over || !overContainer) && (data.rendersEveryFrame || must_redraw)) {
+       if(data.over || (!overContainer && (data.rendersEveryFrame || must_redraw))) {
         // Note that frameCount is broken in p5.js version 0.5.14
         // See https://github.com/processing/p5.js/issues/2192
         data.p5.frameCount += 1;
         data.p5.redraw();
       }
     });
-    must_redraw = false;
+    if (!overContainer) {
+      must_redraw = false;
+    }
     window.requestAnimationFrame(animate);
   }
   window.requestAnimationFrame(animate);
