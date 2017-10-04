@@ -18,13 +18,15 @@ var clock11 = function(sketch) {
   let alpha = 0;
 
   sketch.setup = function() {
-    sketch.strokeWeight(pointSize);
     sketch.angleMode(sketch.DEGREES);
   }
 
   sketch.draw = function() {
     // Clear screen
     sketch.background(150);
+
+    // scale the points depending on the canvas
+    sketch.strokeWeight(pointSize * sketch.height / 200);
 
     // Calculate the current offset
     alpha = (sketch.millis() % cycleDuration) / cycleDuration;
@@ -66,6 +68,14 @@ var clock11 = function(sketch) {
     let height = sketch.height;
     let width = sketch.width;
 
+    // if the aspect ration is to high, scale by height
+    if(width/height > 2)
+      width = height * 1.75;
+
+    // calculate the center of the ellipse
+    let centerX = ellipseX * sketch.width;
+    let centerY = ellipseY * sketch.height;
+
     // calculate the position on a normatized circle.
     let relX =  sketch.cos(alpha*360 - globalColumn * xOffset);
     let relY = -sketch.sin(alpha*360 - globalColumn * xOffset);
@@ -81,14 +91,14 @@ var clock11 = function(sketch) {
     sketch.push();
     // set the position of the first dot
     sketch.translate(
-      relX * width * ellipseWidth/2   + ellipseX * width,
-      relY * height * ellipseHeight/2 + ellipseY * height
+      relX * width * ellipseWidth/2   + centerX,
+      relY * height * ellipseHeight/2 + centerY
     );
 
     // draw the current column
     for(let i=0; i<7; i++) {
       if(charMatrix[i][column] == 1) {
-        sketch.point(0, i * yOffset);
+        sketch.point(0, i * yOffset * sketch.height / 200);
       }
     }
 
