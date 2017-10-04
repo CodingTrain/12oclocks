@@ -4,61 +4,42 @@ var clock04 = function(sketch) {
   let baseWidth = 400;
 
   let numTimes = 25;
-  let timesStored = 0;
 
   let charWidthBase = 5;
   let charHeightBase = 5;
   let skewBase = 1.5;
 
+  let idx = numTimes - 1;
+
   for (let i = 0; i < numTimes; i++) {
     clock.push(null);
   }
 
-  sketch.setup = function() {
-    sketch.frameRate(1);
-  }
-
   sketch.draw = function() {
+    catchUp();
 
     sketch.background(0);
 
     let scale = sketch.width / baseWidth;
-    let frameCount = sketch.frameCount;
 
     let charWidth = charWidthBase * scale;
     let charHeight = charHeightBase * scale;
     let skew = skewBase * scale;
 
-
     sketch.colorMode(sketch.HSB);
-
-    // Use frame count to determine index, so it can be used as a circular array
-    let idx = frameCount % clock.length;
-    clock[idx] = getTime();
-
-    // Take the previous clock's hue and increment it
-    // If this is the first clock, pick a random hue
-    let prevIdx = (frameCount - 1) % numTimes;
-    if (clock[prevIdx]) {
-      let hue = clock[prevIdx].hue;
-      hue = (hue + 5) % 360;
-      clock[idx].hue = hue;
-    } else {
-      clock[idx].hue = sketch.floor(sketch.random(0, 360));
-    }
 
 
     // Translate so the clock ends up in the right spot
-    let translateX = (sketch.width/2 - 25.5 * charWidth) + 2 * timesStored * charWidth;
-    let translateY = (sketch.height/2 - 7 * charHeight) - 2 * timesStored * charHeight;
+    let translateX = (sketch.width/2 - 25.5 * charWidth) + 2 * numTimes * charWidth;
+    let translateY = (sketch.height/2 - 7 * charHeight) - 2 * numTimes * charHeight;
     sketch.translate(translateX, translateY);
-    for (let i = frameCount+1; i <= frameCount + clock.length; i++) {
+    for (let i = idx + 1; i <= idx + clock.length; i++) {
       let j = i % clock.length;
       if (clock[j]) {
-        let last = (i == frameCount + clock.length);
+        let last = j === idx;
         drawClock(clock[j], charWidth, charHeight, skew, last);
-        sketch.translate(-2 * charWidth, 2 * charHeight);
       }
+      sketch.translate(-2 * charWidth, 2 * charHeight);
     }
   }
 
@@ -125,8 +106,62 @@ var clock04 = function(sketch) {
       m: sketch.minute(),
       s: sketch.second(),
     };
-    timesStored++;
-    timesStored = sketch.min(timesStored, numTimes);
     return rightNow;
+  }
+
+  function tick(t) {
+    let newT;
+    if (t === null) {
+      newT = getTime();
+      newT.hue = 5 * Math.floor(sketch.random(360 / 5));
+    } else {
+      // Returns time t + 1 second
+      // And assigns the correct hue
+      newT = {
+        s: t.s + 1,
+        m: t.m,
+        h: t.h,
+        hue: (t.hue + 5) % 360
+      };
+    }
+
+    if (newT.s == 60) {
+      newT.s = 0;
+      newT.m += 1;
+    }
+
+    if (newT.m == 60) {
+      newT.m = 0;
+      if(newT.h === 12) {
+        newT.h = 1;
+      } else {
+        newT.h = newT.h + 1;
+      }
+    }
+
+    return newT;
+  }
+
+  function timeEquals(time1, time2) {
+    if (time1 === time2) {
+      return true;
+    } else if(!time1 || !time2) {
+      return false;
+    } else {
+      return time1.s === time2.s && time1.m === time2.m && time1.h === time2.h;
+    }
+  }
+
+  function catchUp() {
+    let time = getTime();
+    let lastTime = clock[idx];
+    // TODO: This could run up to 12 * 60 * 60 times... if someone leaves this
+    // open for more than 24 hours. Testing seems to suggest this is not that
+    // problematic.
+    while (!timeEquals(time, lastTime)) {
+      lastTime = tick(lastTime);
+      idx = (idx + 1) % numTimes;
+      clock[idx] = lastTime;
+    }
   }
 }

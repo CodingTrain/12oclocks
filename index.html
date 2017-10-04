@@ -37,8 +37,10 @@
       vertical-align: top;
       width: 20vw !important;
       height: 20vh !important;
-      min-width: 200px;
-      min-height: 200px;
+      width: calc(20vw - 2px) !important;
+      height: calc(20vh - 2px) !important;
+      min-width: 150px;
+      min-height: 150px;
     }
     a {
       color: #fff !important;
@@ -48,7 +50,7 @@
       grid-template-rows: repeat(4, 1fr);
       grid-template-columns: repeat(4, 1fr);
       width: 80vw;
-      height: 80vh;
+      min-height: 80vh;
       margin: 10vh 10vw;
     }
 
@@ -63,23 +65,83 @@
     #container .copyright {
       grid-column-start: 1;
       grid-column-end: 5;
-      padding: 20px;
+      padding: 0 20px;
       text-align: right;
+    }
+
+    #container.single .clock {
+      display: none;
+    }
+
+    #container.single .clock.selected {
+      display: block;
+      grid-column-start: 1;
+      grid-column-end: 5;
+      grid-row-start: 1;
+      grid-row-end: 4;
+    }
+
+    #container.single .clock.selected canvas {
+      width: 80vw !important;
+      height: 60vh !important;
+      width: calc(80vw - 2px) !important;
+      height: calc(60vh - 2px) !important;
+    }
+
+    #container.single .copyright {
+      grid-column-end: 3;
+    }
+
+    #container .contributors {
+      display: none;
+      padding: 0 20px;
+      grid-column-start: 3;
+      grid-column-end: 5;
+    }
+
+    #container.single .contributors {
+      display: block;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+
+    }
+
+    li + li::before {
+      content: ", ";
     }
 
     @media (max-width: 800px) {
       #container {
-        grid-template-rows: repeat(11, 1fr);
+        grid-template-rows: repeat(7, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #container.single {
+        grid-template-rows: 1fr 3fr 1fr;
         grid-template-columns: repeat(2, 1fr);
       }
       #container .copyright {
         grid-row-start: 1;
         grid-column-end: 3;
-        padding: 20px;
-        text-align: right;
       }
       canvas {
         width: 40vw !important;
+      }
+      #container.single .clock.selected {
+        grid-column-end: 3;
+        grid-row-start: 2;
+        grid-row-end: 3;
+      }
+      #container .contributors {
+        grid-row-start: 3;
+        grid-column-start: 1;
+        grid-column-end: 3;
       }
     }
 
@@ -103,6 +165,13 @@
         <h1>12 o'clocks</h1>
         <h2>designed by John Maeda</h2>
         <p>Ported to p5.js By <a href="https://github.com/CodingTrain/12oclocks/graphs/contributors">CodingTrain Contributors</a></p>
+      </div>
+      <div class="contributors">
+        <h1>&nbsp;</h1>
+        <h2>This clock was ported to p5.js by:</h2>
+        <ul id="contributor-list">
+
+        </ul>
       </div>
     </div>
   </body>

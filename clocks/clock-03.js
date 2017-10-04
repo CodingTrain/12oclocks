@@ -1,18 +1,17 @@
 // This is the double circle clock
 var clock03 = function(sketch) {
   // "radial grid" parameters
-  let diameter_step;
   const radial_step = 360/(6*6); // 6 characters of (5 width + 1 "blank" between each)
 
   sketch.setup = function() {
     sketch.angleMode(sketch.DEGREES);
     sketch.noStroke();
 
-    // disc divided in 10 parts (top line empty, 7 others for the digit and the two smaller diameters empty)
-    diameter_step = sketch.height/10;
   }
 
   sketch.draw = function() {
+    // disc divided in 10 parts (top line empty, 7 others for the digit and the two smaller diameters empty)
+    let diameter_step = sketch.min(sketch.height, sketch.width) / 10;
     // angle of rotation of the display
     let angle = sketch.map(sketch.millis() % 60000, 0, 60000, 0, 360);
 
@@ -44,7 +43,7 @@ var clock03 = function(sketch) {
             // a little padding to the arc to reduce gaps
             let hasRightNeighbour = (j+1 < 5 && font[text[k]][6-i][j+1] == 1);
             let padding = hasRightNeighbour ? 1 : 0;
-            
+
             // display left arc, layer by layer for each columns so only a small "square" is left to be seen
             sketch.arc(0, sketch.height/2, // arc centered on the left center of the screen
             diameter_step*(i+3), diameter_step*(i+3), // with a diameter corresponding to the line i of the caracter

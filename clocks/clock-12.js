@@ -7,7 +7,7 @@ var clock12 = function(sketch) {
   // color of the back faces
   const backColor = [200, 200, 200, 127];
   // scale of the cube
-  const scale = 1.1;
+  let scale = 1.1;
 
   // The axes of the three different coordinate systems.
   // The normalized x axis (1, 0) will be mapped to the first vector;
@@ -53,6 +53,7 @@ var clock12 = function(sketch) {
   }
 
   sketch.draw = function() {
+    scale = sketch.min(sketch.height, sketch.width) / 200;
     // clear screen
     sketch.background(0);
 
