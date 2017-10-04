@@ -86,10 +86,6 @@ var clock12 = function(sketch) {
    * @param {p5.Vector}    origin  The relative origin of the number.
    */
   function drawNumber(number, color, axes, origin) {
-    // get the dot matrix of the character
-    let char1 = font[number.charAt(0)];
-    let char2 = font[number.charAt(1)];
-
     // set the fill color
     sketch.fill(color);
 
@@ -102,20 +98,16 @@ var clock12 = function(sketch) {
       axes[1].x, axes[1].y,
       origin.x * scale, origin.y * scale
     );
-    sketch.scale(scale);
+    sketch.scale(scale * 7, scale * 11);
 
     // draw the first number
-    for (let x = 0; x < 5; x++)
-      for (let y = 0; y < 7; y++)
-        if (char1[y][x] == 1)
-          sketch.rect(x * 7, y * 11, 7, 11);
+    fontShapes.draw(sketch, number.charAt(0));
 
     // draw the second number if available.
-    if (char2 != undefined)
-      for (let x = 0; x < 5; x++)
-        for (let y = 0; y < 7; y++)
-          if (char2[y][x] == 1)
-            sketch.rect((x + 6) * 7, y * 11, 7, 11);
+    if (number.length > 1) {
+      sketch.translate(6, 0);
+      fontShapes.draw(sketch, number.charAt(1));
+    }
 
     sketch.pop();
   }
