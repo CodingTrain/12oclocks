@@ -61,13 +61,11 @@ var clock09 = function(sketch) {
   	let secondAngle = sketch.map(sc, 0, 60, 0, 360) - 90;
   	let minuteAngle = sketch.map(mn, 0, 60, 0, 360) -90;
     let hourAngle = sketch.map(hr % 12, 0, 12, 0, 360) -90;
-    sketch.noStroke();
-    // Draw the outer circle
-    sketch.fill(224);
-    sketch.ellipse(x,y,w,h);
+    sketch.stroke(200);
+    sketch.strokeWeight(w * 0.05);
     // Draw the inner cirle
     sketch.fill(255);
-    sketch.ellipse(x,y,w-1,h-1);
+    sketch.ellipse(x,y,w * 0.95,h * 0.95);
     // Draw the arms / arcs
     sketch.push();
       sketch.noStroke();
@@ -76,19 +74,19 @@ var clock09 = function(sketch) {
       // Draw the hour arm
       sketch.push();
         sketch.rotate(hourAngle);
-        sketch.triangle(0,0,1.8,-0.5,1.8,0.5);
+        sketch.triangle(0,0,0.45 * w,-0.02 * w, 0.45 * w,0.02 * w);
       sketch.pop();
       // Draw the minute arm
       sketch.push();
         sketch.rotate(minuteAngle);
-        sketch.triangle(0,0,2.2,-0.2,2.2,0.2);
+        sketch.triangle(0,0,0.2 * w,-0.02 * w,0.2 * w,0.02 * w);
       sketch.pop();
       // Draw the second arm
       sketch.push();
         sketch.noFill();
         sketch.stroke(255,0,0);
-        sketch.strokeWeight(0.5);
-        sketch.arc(0,0,w-1,w-1,secondAngle - 10, secondAngle+10 );
+        sketch.strokeWeight(w * 0.05);
+        sketch.arc(0,0,w * 0.8,w * 0.8,secondAngle - 5, secondAngle + 5);
       sketch.pop();
     sketch.pop();
   }
