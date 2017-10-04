@@ -74,12 +74,12 @@ var clock09 = function(sketch) {
       // Draw the hour arm
       sketch.push();
         sketch.rotate(hourAngle);
-        sketch.triangle(0,0,0.45 * w,-0.02 * w, 0.45 * w,0.02 * w);
+        sketch.triangle(0,0,0.2 * w,-0.02 * w, 0.2 * w,0.02 * w);
       sketch.pop();
       // Draw the minute arm
       sketch.push();
         sketch.rotate(minuteAngle);
-        sketch.triangle(0,0,0.2 * w,-0.02 * w,0.2 * w,0.02 * w);
+        sketch.triangle(0,0,0.45 * w,-0.02 * w,0.45 * w,0.02 * w);
       sketch.pop();
       // Draw the second arm
       sketch.push();
