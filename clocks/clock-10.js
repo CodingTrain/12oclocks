@@ -11,6 +11,7 @@ var clock10 = function(sketch) {
 
   sketch.setup = function() {
     sketch.angleMode(sketch.DEGREES);
+    sketch.strokeWeight(1.1);
   };
 
   sketch.draw = function() {
@@ -43,7 +44,7 @@ var clock10 = function(sketch) {
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 10; j++) {
-        drawDate(i*10 + j, scale, solid, true);
+        drawDate(i*10 + j, scale, drawShape, true);
         sketch.translate(0, ySpacing * scale);
       }
       sketch.translate(xSpacing * scale, -10 * ySpacing * scale);
@@ -59,7 +60,7 @@ var clock10 = function(sketch) {
 
     let h = sketch.hour12();
     translateTo(h);
-    drawDate(h, scale, solid, false);
+    drawDate(h, scale, drawShape, false);
 
     sketch.pop();
   }
@@ -71,7 +72,7 @@ var clock10 = function(sketch) {
 
     let m = sketch.minute();
     translateTo(m);
-    drawDate(m, scale, outline, true);
+    drawDate(m, scale, drawShape, true);
 
     sketch.pop();
   }
@@ -85,14 +86,14 @@ var clock10 = function(sketch) {
     translateTo(s);
     sketch.translate(-5.5 * scale, -3.5 * scale);
 
-    drawDate(s, 2*scale, outline, true);
-    drawDate(s, 2*scale, diagonal, true);
+    drawDate(s, 2*scale, drawShape, true);
+    drawDate(s, 2*scale, drawDiagonal, true);
 
     sketch.translate(-scale, scale);
     sketch.noStroke();
     sketch.fill(colorRed);
 
-    drawDate(s, 2*scale, solid, true);
+    drawDate(s, 2*scale, drawShape, true);
 
     sketch.pop();
   }
@@ -114,63 +115,28 @@ var clock10 = function(sketch) {
     sketch.push()
 
     if(number.charAt(0) !== " ")
-      drawCharacter(number.charAt(0), scale, drawFunction);
+      drawFunction(number.charAt(0), scale);
 
     sketch.translate(6 * scale, 0);
-    drawCharacter(number.charAt(1), scale, drawFunction);
+    drawFunction(number.charAt(1), scale);
     sketch.pop();
   }
 
-  // Draws a character with the given drawFunction
-  function drawCharacter(character, scale, drawFunction) {
-    let dots = font[character.charAt(0)];
-
-    for (let row = 0; row < dots.length; row++)
-      for (let col = 0; col < dots[row].length; col++)
-        if (dots[row][col] === 1)
-          drawFunction(dots, col, row, scale);
+  // Draws the shape of a character
+  function drawShape(character, scale) {
+    fontShapes.draw(sketch, character, scale);
   }
 
-  // Draws the solid cell
-  function solid(dots, x, y, scale) {
-    sketch.rect(x * scale, y * scale, scale, scale);
-  }
+  // Draws the diagonal lines of a character
+  function drawDiagonal(character, scale) {
+    let char = fontShapes[character.charAt(0)];
 
-  // Draws the outlines of a cell depending on the neighbour
-  function outline(dots, x, y, scale) {
-    let checkTop = (y - 1 < 0 || dots[y - 1][x] == 0);
-    let checkBottom = (y + 1 >= dots.length || dots[y + 1][x] == 0);
-    let checkLeft = (x - 1 < 0 || dots[y][x - 1] == 0);
-    let checkRight = (x + 1 >= dots[y].length || dots[y][x + 1] == 0);
-
-    if (checkTop)
-      sketch.line(x * scale, y * scale - 1, (x + 1) * scale - 1, y * scale - 1);
-
-    if (checkBottom)
-      sketch.line(x * scale, (y + 1) * scale, (x + 1) * scale - 1, (y + 1) * scale);
-
-    if (checkLeft)
-      sketch.line(x * scale - 1, y * scale, x * scale - 1, (y + 1) * scale - 1);
-
-    if (checkRight)
-      sketch.line((x + 1) * scale, y * scale, (x + 1) * scale, (y + 1) * scale - 1);
-  }
-
-  // Draws the diagonal lines of a cell depending on the neighbour
-  function diagonal(dots, x, y, scale) {
-    let checkTop = (y - 1 < 0 || dots[y - 1][x] == 0);
-    let checkBottom = (y + 1 >= dots.length || dots[y + 1][x] == 0);
-    let checkLeft = (x - 1 < 0 || dots[y][x - 1] == 0);
-    let checkRight = (x + 1 >= dots[y].length || dots[y][x + 1] == 0);
-
-    if (checkTop && checkLeft)
-      sketch.line(x * scale, y * scale, (x - 0.5) * scale, (y + 0.5) * scale);
-
-    if (checkTop && checkRight)
-      sketch.line((x + 1) * scale, y * scale, (x + 0.5) * scale, (y + 0.5) * scale - 0.5);
-
-    if (checkBottom && checkRight)
-      sketch.line((x + 1) * scale, (y + 1) * scale - 1, (x + 0.5) * scale, (y + 1.5) * scale - 1);
+    for (let s = 0; s < char.length; s++)
+      for (let v = 0; v < char[s].length; v++)
+        sketch.line(
+          char[s][v][0] * scale, char[s][v][1] * scale,
+          (char[s][v][0] - 0.5) * scale, (char[s][v][1] + 0.5) * scale
+        );
   }
 
 }
