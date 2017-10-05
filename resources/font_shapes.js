@@ -365,21 +365,25 @@ let fontShapes = {
    * Transformation can be used to place the character somewhere else.
    * The look of the character can be changed by using stroke(),
    * fill(), etc...
+   * Optionally you can apply an uniformal scale.
    *
-   * @param {p5}   sketch     The p5-context to draw the character on.
-   * @param {char} character  The character that is going to be drawn.
+   * @param {p5}    sketch    The p5-context to draw the character on.
+   * @param {char}  character The character that is going to be drawn.
+   * @param {float} [scale]   The scale of the character.
    */
-  draw: function(sketch, character) {
+  draw: function(sketch, character, scale) {
     let char = this[character.charAt(0)];
     if(char === undefined)
       return;
+    scale = scale ? scale : 1;
+
     // iterate over each shape
     for (let s = 0; s < char.length; s++) {
       sketch.beginShape();
       // iterate over each vertex
       for (let v = 0; v < char[s].length; v++)
-        sketch.vertex(char[s][v][0], char[s][v][1]);
-      sketch.endShape();
+        sketch.vertex(char[s][v][0] * scale, char[s][v][1] * scale);
+      sketch.endShape(sketch.CLOSE);
     }
   }
 }
