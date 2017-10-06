@@ -151,7 +151,7 @@ window.addEventListener('load', function() {
           return r.json();
         })
         .then(function(commits) {
-          clock_data.contributors = commits.reduce(function(acc, commit) {
+          clock_data.contributors = commits.reverse().reduce(function(acc, commit) {
             // Don't include the original commit
             if(ignored_commits.indexOf(commit.sha) >= 0) {
               return acc;
@@ -162,7 +162,7 @@ window.addEventListener('load', function() {
               acc.push(commit.author);
             }
             return acc;
-          }, []).reverse();
+          }, []);
           refresh_contributors_gui();
         });
     }
